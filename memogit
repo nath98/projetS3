@@ -1,0 +1,9 @@
+git status 	:	pour voir ce qu’il c’est passé
+git add <file>	:	ajoute des fichier, il faut utiliser cette fonction avant de commit (utiliser "git add ." pour tout ajouter d’un coup)
+git commit	: 	permet de créer un nouveau commit
+git pull 	:	pour récupérer les dernières modif
+git push 	:	pour envoyer ses modif au serveur (necessite un commit)
+git checkout nom_de_la_branch	:	changer de branch pour aller sur nom_de_la_branch
+git checkout -b nom_de_la_branch	:	créer une branch et vas dessus
+git branch -D nom_de_la_branch	:	delete la branch
+git fetch 	:	met à jour l’état des autres branch
