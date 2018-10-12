@@ -33,23 +33,154 @@ DigitalOut* display_list_2[7] = {&SEGA, &SEGB, &SEGC, &SEGD, &SEGE, &SEGF, &SEGG
 Timeout t;
 Seven_segment_display display(display_list_1, display_list_2);
 
-void test(uint8_t i){
-	display.left_shift(i);
-}
+uint8_t etape0[4] = {0xFF,0xFF,0xFF,0xFF};
+uint8_t etape1b[4] = {0,0,0,0};
+uint8_t etape1[4] = {0,0,0,0};
+uint8_t etape2[4] = {1,1,1,1};
+uint8_t etape3[4] = {2,2,2,2};
+uint8_t etape4[4] = {4,4,4,4};
+uint8_t etape5[4] = {8,8,8,8};
+uint8_t etape6[4] = {16,16,16,16};
+uint8_t etape7[4] = {32,32,32,32};
+uint8_t etape8[4] = {64,64,64,64};
+
+
 
 Serial pc(USBTX, USBRX);
 
+bool display_time = false;
+std::vector<uint8_t*> annim;
+std::vector<uint8_t*> annim_mask;
+std::vector<uint16_t*> mask;
+
+void ISR_push_keyboard(uint8_t value){
+	static uint8_t tab[4];
+	static bool init = false;
+	static uint8_t cursor = 0;
+	if(!init){
+		tab[0] = 0;
+		tab[1] = 0;
+		tab[2] = 0;
+		tab[3] = 0;
+		init = true;
+	}
+	switch(value){
+		case 0x1:
+			if(tab[cursor] >= 0xF){
+				tab[cursor] = 0;
+			}
+			else{
+				tab[cursor]++;
+			}
+			break;
+		case 0x04:
+			if(cursor >= 3){
+				cursor = 0;
+			}
+			else{
+				cursor++;
+			}
+			for(uint8_t i = 0; i<4; i++){
+				annim_mask[1][i] = 0xFF;
+			}
+			annim_mask[1][cursor] = 0x00;
+			
+			break;
+		case 0x06:
+			if(cursor <=0){
+				cursor = 3;
+			}
+			else{
+				cursor--;
+			}
+			for(uint8_t i = 0; i<4; i++){
+				annim_mask[1][i] = 0xFF;
+			}
+			annim_mask[1][cursor] = 0x00;
+			break;
+		case 0x09:
+			if(tab[cursor] <= 0){
+				tab[cursor] = 0xF;
+			}
+			else{
+				tab[cursor]--;
+			}
+			break;
+		case 0xF:
+			//validate
+			break;
+		case 0xC:
+			display.start_print();
+			display_time = true;
+			break;
+		case 0xD:
+			display.set_annim(annim_mask);
+			display.start_print_with_mask();
+			display.set_value(1234);
+			display_time = false;
+			break;
+		case 0xE:
+			display.show_annim();
+		default:
+			break;
+	}
+	display.set_value(tab);
+}
+
+
+void timer1s(){
+	static uint8_t sec = 0;
+	static uint8_t min = 0;
+	if(sec>=59){
+		sec = 0;
+		if(min>=59){
+			min = 0;
+		}
+		else{
+			min++;
+		}
+	}
+	else{
+		sec++;
+	}
+	uint8_t tab[4];
+	tab[0]= sec%10;
+	tab[1] = sec/10;
+	tab[2] = min%10;
+	tab[3] = min/10;
+	if(display_time){
+		display.set_value(tab);
+	}
+}
+
 int main(){
+	Ticker t;
+	t.attach(&timer1s, 1);
+	annim.push_back(etape2);
+	annim.push_back(etape3);
+	annim.push_back(etape4);
+	annim.push_back(etape5);
+	annim.push_back(etape6);
+	annim.push_back(etape7);
+
+	annim_mask.push_back(etape0);
+	annim_mask.push_back(etape1b);
+
+
+	uint16_t mask1[4] = {0x5555,0x5555,0x5555,0x5555};
+	uint16_t mask2[4] = {0x5555,0x5555,0x5555,0x5555};
+	mask.push_back(mask1);
+	mask.push_back(mask1);
+	
+	display.set_operator_mask(mask);
+
 	Keyboard keyboard(keyboard_list_line, keyboard_list_colum);
-	keyboard.set_callback_push_button(&test);
-	keyboard.start_scruting();
-	uint8_t tab[4] = {1,2,3,4};
-	display.set_value(5641);
+	keyboard.set_callback_push_button(&ISR_push_keyboard);
+	keyboard.start_scanning();
+	keyboard.set_callback_push_button_repeated(&ISR_push_keyboard);
+	keyboard.set_repetition_available(true);
 	display.start_print();
-	display.set_time_between_2_print(0.0001);
 	//t.attach(&test, 0.5);
 	while(1){
-		keyboard.print(&pc);
-		wait(0.5);
 	}
 }
