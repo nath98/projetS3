@@ -1,6 +1,7 @@
 #include "mbed.h"
 #include "component/seven_segment_display.h"
 #include "component/keyboard.h"
+#include "component/distance_sensor.h"
 
 DigitalOut DISPLAY1(PC_8);
 DigitalOut DISPLAY3(PC_6);
@@ -25,6 +26,10 @@ DigitalIn KEY_COLUM2(PC_3);
 DigitalIn KEY_COLUM3(PC_0);
 DigitalIn KEY_COLUM4(PC_1);
 
+
+InterruptIn DISTANCE_IN(PA_13);
+DigitalOut DISTANCE_OUT(PA_14);
+
 DigitalOut* keyboard_list_line[4] = {&KEY_LINE1, &KEY_LINE2, &KEY_LINE3, &KEY_LINE4}; 
 DigitalIn* keyboard_list_colum[4] = {&KEY_COLUM1, &KEY_COLUM2, &KEY_COLUM3, &KEY_COLUM4};
 
@@ -46,7 +51,7 @@ uint8_t etape8[4] = {64,64,64,64};
 
 
 
-Serial pc(USBTX, USBRX);
+Distance_sensor distanceD(&DISTANCE_OUT, &DISTANCE_IN);
 
 bool display_time = false;
 std::vector<uint8_t*> annim;
@@ -107,6 +112,7 @@ void ISR_push_keyboard(uint8_t value){
 			}
 			break;
 		case 0xF:
+			distanceD.start_mesure();
 			//validate
 			break;
 		case 0xC:
@@ -153,7 +159,14 @@ void timer1s(){
 	}
 }
 
+void get_distance(uint16_t distance){
+	display.set_value(distance/58);
+}
+
 int main(){
+	Serial pc(USBTX, USBRX);
+	pc.baud(9600);
+	pc.printf("bite !!!");
 	Ticker t;
 	t.attach(&timer1s, 1);
 	annim.push_back(etape2);
@@ -180,7 +193,9 @@ int main(){
 	keyboard.set_callback_push_button_repeated(&ISR_push_keyboard);
 	keyboard.set_repetition_available(true);
 	display.start_print();
-	//t.attach(&test, 0.5);
+	distanceD.set_function_mesure_ended(&get_distance);
+	distanceD.start_mesure();
+	uint8_t b = 0;
 	while(1){
 	}
 }

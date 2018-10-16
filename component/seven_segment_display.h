@@ -47,7 +47,7 @@ class Seven_segment_display
 
 		//setters
 		void set_value(const uint8_t value[]);
-		void set_value(uint16_t value);
+		void set_value(uint32_t value);
 		void set_number(uint8_t position, uint8_t number);
 		void set_time_between_2_print(float time);
 		void set_time_between_2_annim_image(float times);

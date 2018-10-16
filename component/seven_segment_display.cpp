@@ -37,7 +37,7 @@ void Seven_segment_display::set_value(const uint8_t* value){
 	}
 }
 
-void Seven_segment_display::set_value(uint16_t value){
+void Seven_segment_display::set_value(uint32_t value){
 	for(uint8_t i = 0; i<4; i++){
 		m_value_to_print[i] = value%10;
 		value/=10;
