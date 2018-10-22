@@ -82,7 +82,6 @@ class Keyboard{
 		Ticker m_scan_ticker;
 		Timeout m_wait_for_repeat;
 		Ticker m_repeat_ticker;
-		Serial m_debug;
 };
 
 #endif //KEYBOARD_H

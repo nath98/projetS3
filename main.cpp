@@ -3,6 +3,7 @@
 #include "component/keyboard.h"
 #include "component/distance_sensor.h"
 #include "component/clock.h"
+#include "component/shell.h"
 
 DigitalOut DISPLAY1(PC_8);
 DigitalOut DISPLAY3(PC_6);
@@ -164,13 +165,21 @@ void get_distance(uint16_t distance){
 	display.set_value(distance/58);
 }
 
+void ISR_Callback(){
+	static uint16_t i= 0;
+	display.set_value(1234);
+	display.start_print();
+	i++;
+}
+
 int main(){
 	Clock clk;
 	clk.set_callback(&ISR_timer1s);
 	clk.start();
-	Serial pc(USBTX, USBRX);
-	pc.baud(9600);
-	pc.printf("bite !!!");
+	Shell sh;
+	sh.set_callback(&ISR_Callback);
+
+
 	annim.push_back(etape2);
 	annim.push_back(etape3);
 	annim.push_back(etape4);

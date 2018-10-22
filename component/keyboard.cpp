@@ -1,6 +1,6 @@
 #include "keyboard.h"
 
-Keyboard::Keyboard(DigitalOut* line[4], DigitalIn* colum[4]): m_debug(USBTX, USBRX){
+Keyboard::Keyboard(DigitalOut* line[4], DigitalIn* colum[4]) /*:m_debug(USBTX, USBRX)*/{
 	for(uint8_t i = 0; i<4; i++){
 		m_line[i]=line[i];
 		m_colum[i]=colum[i];
