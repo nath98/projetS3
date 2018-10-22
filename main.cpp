@@ -2,6 +2,7 @@
 #include "component/seven_segment_display.h"
 #include "component/keyboard.h"
 #include "component/distance_sensor.h"
+#include "component/clock.h"
 
 DigitalOut DISPLAY1(PC_8);
 DigitalOut DISPLAY3(PC_6);
@@ -134,8 +135,8 @@ void ISR_push_keyboard(uint8_t value){
 }
 
 
-void timer1s(){
-	static uint8_t sec = 0;
+void ISR_timer1s(clk_t time){
+/*	static uint8_t sec = 0;
 	static uint8_t min = 0;
 	if(sec>=59){
 		sec = 0;
@@ -153,9 +154,9 @@ void timer1s(){
 	tab[0]= sec%10;
 	tab[1] = sec/10;
 	tab[2] = min%10;
-	tab[3] = min/10;
+	tab[3] = min/10;*/
 	if(display_time){
-		display.set_value(tab);
+		display.set_value(time.min*100+time.sec);
 	}
 }
 
@@ -164,11 +165,12 @@ void get_distance(uint16_t distance){
 }
 
 int main(){
+	Clock clk;
+	clk.set_callback(&ISR_timer1s);
+	clk.start();
 	Serial pc(USBTX, USBRX);
 	pc.baud(9600);
 	pc.printf("bite !!!");
-	Ticker t;
-	t.attach(&timer1s, 1);
 	annim.push_back(etape2);
 	annim.push_back(etape3);
 	annim.push_back(etape4);
