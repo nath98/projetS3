@@ -14,19 +14,25 @@ void Shell::receive(){
 	else if(m_callback != NULL){
 		//try to analyse the msg
 		//first you have to split the message by word
-/*		std::string instruction;
-		std::getline(m_message, instruction, ' ');
-		switch(instruction){
-			case "cd":
-				break;
-			case "ls":
-				break;
-			case "cat":
-				break;
-			default:
-				pc.printf("%s : commande inconnue");
-				break;
-		}*/
+		string instruction;
+		uint16_t i;
+		for(i = 0; m_message[i]!=' '; i++){
+			instruction += m_message[i];
+		}
+		if(instruction == "cd"){
+			m_pc.printf("\ncd\n");
+		}
+		else if(instruction == "ls"){
+		
+		}
+		else if(instruction == "cat"){
+
+		}
+		else{
+			instruction += "\n truc \n";
+			m_pc.printf("%s : commande inconnue\n", instruction.c_str());
+		}
+		m_message = "";
 	}
 }
 
