@@ -2,6 +2,7 @@
 #define SHELL_H
 
 #include "mbed.h"
+#include <string>
 
 class Shell{
 	public:
@@ -10,6 +11,7 @@ class Shell{
 		void set_callback(void (*funct)(void));
 
 	private:
+		std::string m_message;
 		void receive();
 		void (*m_callback)(void);
 		RawSerial m_pc;
