@@ -6,6 +6,7 @@ Seven_segment_display::Seven_segment_display(DigitalOut* select_pin[4], DigitalO
 	m_print = false;
 	m_annim = false;
 	m_annim_mask= false;
+	m_common_anode = 1;
 }
 
 Seven_segment_display::~Seven_segment_display(){
@@ -139,37 +140,38 @@ void Seven_segment_display::annim_step(){
 void Seven_segment_display::step_print(){
 	static uint8_t i=0;
 	for(int j = 0; j<7; j++){
-		m_value_pin[j]->write(0);
+		m_value_pin[j]->write(m_common_anode);
 	}
-	m_select_pin[i]->write(1);
+	m_select_pin[i]->write(!m_common_anode);
 	i++;
 	if(i>4){
 		i = 0;
 	}
-	m_select_pin[i]->write(0);
+	m_select_pin[i]->write(m_common_anode);
 	for(int j = 0; j<7; j++){
 		if(m_annim_mask){
 			uint8_t v = (uint8_t)((m_operator_annim_tab[m_annim_step][i] & (3<<(2*j)))>>(2*j));
 			switch(v){
 				case 0:
-					m_value_pin[j]->write(transcoding_tab[m_value_to_print[i]][j]);
+					m_value_pin[j]->write(transcoding_tab[m_value_to_print[i]][j]^m_common_anode);
 					break;
 				case 1:
-					m_value_pin[j]->write((((m_annim_tab[m_annim_step][i])&(1<<j)) != 0) & transcoding_tab[m_value_to_print[i]][j]);
+					m_value_pin[j]->write(((((m_annim_tab[m_annim_step][i])&(1<<j)) != 0) & transcoding_tab[m_value_to_print[i]][j])^m_common_anode);
 					break;
 				case 2:
-					m_value_pin[j]->write((((m_annim_tab[m_annim_step][i])&(1<<j)) != 0) | transcoding_tab[m_value_to_print[i]][j]);
+					m_value_pin[j]->write(((((m_annim_tab[m_annim_step][i])&(1<<j)) != 0) | transcoding_tab[m_value_to_print[i]][j])^m_common_anode);
 					break;
 				case 3:
-					m_value_pin[j]->write((((m_annim_tab[m_annim_step][i])&(1<<j)) != 0) ^ transcoding_tab[m_value_to_print[i]][j]);
+					m_value_pin[j]->write(((((m_annim_tab[m_annim_step][i])&(1<<j)) != 0) ^ transcoding_tab[m_value_to_print[i]][j])^m_common_anode);
 					break;
 			}
 		}
 		else if(m_annim){
-			m_value_pin[j]->write((((m_annim_tab[m_annim_step][i])&(1<<j)) != 0));
+			m_value_pin[j]->write(((((m_annim_tab[m_annim_step][i])&(1<<j)) != 0))^m_common_anode);
+
 		}
 		else{
-			m_value_pin[j]->write(transcoding_tab[m_value_to_print[i]][j]);
+			m_value_pin[j]->write((transcoding_tab[m_value_to_print[i]][j])^m_common_anode);
 		}
 	}
 }

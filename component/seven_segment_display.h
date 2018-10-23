@@ -59,6 +59,8 @@ class Seven_segment_display
 	//	void print(uint8_t tab[]);
 
 	private:
+		uint8_t m_common_anode;
+
 		void next_annim();
 		void step_next_annim();
 
