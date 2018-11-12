@@ -1,13 +1,13 @@
 #include "shell.h"
 
-Shell::Shell() : m_pc(USBTX, USBRX, 9600){
+Shell::Shell() : RawSerial(USBTX, USBRX, 1000000){
 	m_callback = NULL;
-	m_pc.attach(callback(this, &Shell::receive));
-	m_pc.printf("liason init");
+	attach(callback(this, &Shell::receive));
+	printf("liason init");
 }
 
 void Shell::receive(){
-	char c = m_pc.getc();
+	char c = getc();
 	if(c != '\n' && m_callback != NULL){
 		m_message +=  c;
 	}
@@ -20,7 +20,7 @@ void Shell::receive(){
 			instruction += m_message[i];
 		}
 		if(instruction == "cd"){
-			m_pc.printf("\ncd\n");
+			printf("\ncd\n");
 		}
 		else if(instruction == "ls"){
 		
@@ -30,7 +30,7 @@ void Shell::receive(){
 		}
 		else{
 			instruction += "\n truc \n";
-			m_pc.printf("%s : commande inconnue\n", instruction.c_str());
+			//printf("%s : commande inconnue\n", instruction.c_str());
 		}
 		m_message = "";
 	}
@@ -39,3 +39,7 @@ void Shell::receive(){
 void Shell::set_callback(void (*funct)(void)){
 	m_callback = funct;
 }
+
+//void Shell::printf(char* c){
+//	printf(c);
+//}

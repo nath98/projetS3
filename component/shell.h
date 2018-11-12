@@ -4,17 +4,18 @@
 #include "mbed.h"
 #include <string>
 
-class Shell{
+class Shell : public RawSerial{
 	public:
 		Shell();
 //		void printf(string string);
 		void set_callback(void (*funct)(void));
+//		void printf(char* c);
 
 	private:
 		std::string m_message;
 		void receive();
 		void (*m_callback)(void);
-		RawSerial m_pc;
+//		RawSerial m_pc;
 };
 
 
