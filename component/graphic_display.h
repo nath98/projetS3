@@ -5,8 +5,8 @@
 #include "mbed.h"
 
 typedef struct{
-	uint16_t x;
-	uint16_t y;
+	int16_t x;
+	int16_t y;
 }coord_t;
 
 class Graphic_Display : public SPI_TFT_ILI9341{

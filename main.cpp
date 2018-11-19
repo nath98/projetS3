@@ -202,11 +202,11 @@ int main(){
 	
 	display.set_operator_mask(mask);
 
-	Keyboard keyboard(keyboard_list_line, keyboard_list_colum);
-	keyboard.set_callback_push_button(&ISR_push_keyboard);
-	keyboard.start_scanning();
-	keyboard.set_callback_push_button_repeated(&ISR_push_keyboard);
-	keyboard.set_repetition_available(true);
+//	Keyboard keyboard(keyboard_list_line, keyboard_list_colum);
+//	keyboard.set_callback_push_button(&ISR_push_keyboard);
+//	keyboard.start_scanning();
+//	keyboard.set_callback_push_button_repeated(&ISR_push_keyboard);
+//	keyboard.set_repetition_available(true);
 	display.start_print();
 	display.set_value(9876);
 	p.start_game();

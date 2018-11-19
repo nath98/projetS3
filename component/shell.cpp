@@ -1,6 +1,6 @@
 #include "shell.h"
 
-Shell::Shell() : RawSerial(USBTX, USBRX, 1000000){
+Shell::Shell() : RawSerial(USBTX, USBRX, 100000){
 	m_callback = NULL;
 	attach(callback(this, &Shell::receive));
 	printf("liason init");

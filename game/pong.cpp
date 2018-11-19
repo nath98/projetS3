@@ -1,17 +1,18 @@
 #include "pong.h"
 
 Pong::Pong(Graphic_Display* screen, Potentiometer* p1, Potentiometer* p2, Shell* s) : m_screen(screen), m_input1(p1), m_input2(p2), m_s(s){
-	m_bar_size.x = DEFAULT_BAR_SIZE_X;
-	m_bar_size.y = DEFAULT_BAR_SIZE_Y;
-	m_ball_speed = 10;
-	m_ball_size = DEFAULT_BALL_SIZE;
+	m_bar_size = DEFAULT_BAR_SIZE;
+	m_ball_speed.x = -5;
+	m_ball_speed.y = 0;
+	m_ball_diameter = DEFAULT_BALL_DIAMETER;
 	m_screen_size.x = m_screen->width();
 	m_screen_size.y = m_screen->height();
-	m_screen->fillrect(40, m_bar_position[0].x, 50, m_bar_position[0].x + m_bar_size.y, 0xFFFF);
+	m_ball_position.x = m_screen_size.x/2;
+	m_ball_position.y = m_screen_size.y/2;
 }
 
 void Pong::start_game(){
-	m_ticker.attach(callback(this, &Pong::game_need_to_be_update), 0.1);
+	m_ticker.attach(callback(this, &Pong::game_need_to_be_update), 0.02);
 }
 
 void Pong::stop_game(){
@@ -27,16 +28,85 @@ void Pong::game_need_to_be_update(){
 }
 
 void Pong::update_game(){
-	static coord_t new_bar_position[2];
+	//clear to allow next update
 	m_game_need_to_be_update = false;
+
+	//calcul futur move
 	//move the bar
-	new_bar_position[0].x = (uint16_t)((((uint32_t)m_input1->read_u16())*(m_screen_size.y-m_bar_size.y))/(0xFFFF));
+	uint8_t new_bar_position[2];
+	new_bar_position[0] = (uint16_t)((((uint32_t)m_input1->read_u16())*(m_screen_size.y-1-m_bar_size))/(0xFFFF));
+	new_bar_position[1] = (uint16_t)((((uint32_t)m_input2->read_u16())*(m_screen_size.y-1-m_bar_size))/(0xFFFF));
+
+	//move ball
+	coord_t new_ball_position = {m_ball_position.x + m_ball_speed.x, m_ball_position.y - m_ball_speed.y};
+	
 	//check colision
+	//with top bar
+	if(new_ball_position.y-m_ball_diameter <= 0){
+		m_ball_speed.y *= -1;
+		m_ball_position.y *= -1;
+	}
+	//with bottom bar
+	else if(new_ball_position.y+m_ball_diameter >= m_screen_size.y-1){
+		m_ball_speed.y *= -1;
+		m_ball_position.y = ((m_screen_size.y-1) << 2) - m_ball_position.y;//(y-320)*-1 + 320 == (2*320)-y
+	}
+	//with left bar
+	if(new_ball_position.x-m_ball_diameter < DISTANCE_FROM_SCREEN_LIMIT+BAR_WIDTH){
+		float coef = (m_ball_position.x-(DISTANCE_FROM_SCREEN_LIMIT+BAR_WIDTH))/m_ball_speed.x;
+		float real_y_position = m_ball_position.y + coef*m_ball_speed.y;
+		if(real_y_position + m_ball_diameter < m_bar_position[0] || real_y_position - m_ball_diameter - m_bar_size > m_bar_position[0]){ 
+			//the ball is out of bar range
+			//add one point to player 2 (id 1)
+			new_ball_position.x = m_screen_size.x/2;
+			new_ball_position.y = m_screen_size.y/2;
+			m_ball_speed.y = 0;
+			m_ball_speed.x = -2;
+		}
+		else{
+			float deviation_coef = (((m_bar_position[0]-real_y_position)*2.0)/m_bar_size)+1;
+			m_ball_speed.y = deviation_coef*-2.0*m_ball_speed.x;
+			m_ball_speed.x *= -1;
+			new_ball_position.x += 2*(DISTANCE_FROM_SCREEN_LIMIT+BAR_WIDTH-new_ball_position.x) ;
+		}
+
+	}
+	else if (new_ball_position.x+m_ball_diameter>m_screen_size.x - DISTANCE_FROM_SCREEN_LIMIT -BAR_WIDTH){
+		float coef = (m_ball_position.x-m_screen_size.x - (DISTANCE_FROM_SCREEN_LIMIT+BAR_WIDTH))/m_ball_speed.x;
+		float real_y_position = m_ball_position.y + coef*m_ball_speed.y;
+		if(real_y_position + m_ball_diameter < m_bar_position[1] || real_y_position - m_ball_diameter - m_bar_size > m_bar_position[1]){ 
+			new_ball_position.x = m_screen_size.x/2;
+			new_ball_position.y = m_screen_size.y/2;
+			m_ball_speed.y = 0;
+			m_ball_speed.x = 2;
+		}
+		else{
+			float deviation_coef = (((m_bar_position[1]-real_y_position)*2.0)/m_bar_size)+1;
+			m_ball_speed.y = deviation_coef*2.0*m_ball_speed.x;
+			m_ball_speed.x *= -1;
+			m_ball_position.x -= 2*(DISTANCE_FROM_SCREEN_LIMIT+BAR_WIDTH-m_ball_position.x) ;
+		}
+	}
+	//with right bar
 
 	//calculate new ball_position
 
 	//display all 
-	m_screen->fillrect(5, m_bar_position[0].x, 10, m_bar_position[0].x + m_bar_size.y, 0x0000);
-	m_bar_position[0].x = new_bar_position[0].x;
-	m_screen->fillrect(5, m_bar_position[0].x, 10, m_bar_position[0].x + m_bar_size.y, 0xFFFF);
+	//player 1
+	m_bar_position[0] = new_bar_position[0];
+	m_screen->fillrect(DISTANCE_FROM_SCREEN_LIMIT, 0, DISTANCE_FROM_SCREEN_LIMIT+BAR_WIDTH, m_bar_position[0], 0x0000);
+	m_screen->fillrect(DISTANCE_FROM_SCREEN_LIMIT, m_bar_position[0]+m_bar_size , BAR_WIDTH+DISTANCE_FROM_SCREEN_LIMIT, m_screen_size.y-1, 0x0000);
+	m_screen->fillrect(DISTANCE_FROM_SCREEN_LIMIT, m_bar_position[0], BAR_WIDTH+DISTANCE_FROM_SCREEN_LIMIT, m_bar_position[0] + m_bar_size, 0xFF00);
+
+	//player 2
+	m_bar_position[1] = new_bar_position[1];
+	m_screen->fillrect(m_screen_size.x - DISTANCE_FROM_SCREEN_LIMIT - BAR_WIDTH, 0, m_screen_size.x - DISTANCE_FROM_SCREEN_LIMIT, m_bar_position[1], 0x0000);
+	m_screen->fillrect(m_screen_size.x - DISTANCE_FROM_SCREEN_LIMIT - BAR_WIDTH, m_bar_position[1]+m_bar_size , m_screen_size.x - DISTANCE_FROM_SCREEN_LIMIT, m_screen_size.y-1, 0x0000);
+	m_screen->fillrect(320 - DISTANCE_FROM_SCREEN_LIMIT - BAR_WIDTH, m_bar_position[1], 320 - DISTANCE_FROM_SCREEN_LIMIT, m_bar_position[1] + m_bar_size, 0xFF00);
+
+	//ball
+	m_screen->fillrect(m_ball_position.x-m_ball_diameter, m_ball_position.y - m_ball_diameter, m_ball_position.x + m_ball_diameter, m_ball_position.y + m_ball_diameter, 0x0000);
+	m_ball_position.x = new_ball_position.x;
+	m_ball_position.y = new_ball_position.y;
+	m_screen->fillrect(m_ball_position.x-m_ball_diameter, m_ball_position.y - m_ball_diameter, m_ball_position.x + m_ball_diameter, m_ball_position.y + m_ball_diameter, 0xFFFF);
 }

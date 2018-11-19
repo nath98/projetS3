@@ -39,7 +39,7 @@ SPI_TFT_ILI9341::SPI_TFT_ILI9341(PinName mosi, PinName miso, PinName sclk, PinNa
     orientation = 0;
     char_x = 0;
     SPI::format(8,3);                  // 8 bit spi mode 3
-    SPI::frequency(10000000);          // 10 Mhz SPI clock
+    SPI::frequency(1000000);          // 1 Mhz SPI clock
     tft_reset();
 }
 
