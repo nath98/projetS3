@@ -1,9 +1,14 @@
 #include "keyboard.h"
 
-Keyboard::Keyboard(DigitalOut* line[4], DigitalIn* colum[4]) /*:m_debug(USBTX, USBRX)*/{
+Keyboard::Keyboard(PinName line1, PinName line2, PinName line3, PinName line4, PinName colum1, PinName colum2, PinName colum3)   /*:m_debug(USBTX, USBRX)*/{
+	m_line[0] = new DigitalOut(line1);
+	m_line[1] = new DigitalOut(line2);
+	m_line[2] = new DigitalOut(line3);
+	m_line[3] = new DigitalOut(line4);
+	m_colum[0] = new DigitalIn(colum1);
+	m_colum[1] = new DigitalIn(colum2);
+	m_colum[2] = new DigitalIn(colum3);
 	for(uint8_t i = 0; i<4; i++){
-		m_line[i]=line[i];
-		m_colum[i]=colum[i];
 		m_line[i]->write(0);
 	}
 	for(uint8_t i = 0; i<16; i++){
@@ -22,32 +27,39 @@ Keyboard::Keyboard(DigitalOut* line[4], DigitalIn* colum[4]) /*:m_debug(USBTX, U
 }
 
 Keyboard::~Keyboard(){
+	delete m_line[0];
+	delete m_line[1];
+	delete m_line[2];
+	delete m_line[3];
+	delete m_colum[0];
+	delete m_colum[1];
+	delete m_colum[2];
 
 }
 
 void none(uint8_t i){}
 
 void Keyboard::scan(){
-	for(uint8_t i = 0; i<4; i++){
+	for(uint8_t i = 0; i<NUMBER_LINE; i++){
 		m_line[i]->write(1);
-		for(uint8_t j = 0; j<4; j++){
+		for(uint8_t j = 0; j<NUMBER_COLUM; j++){
 			uint8_t v = m_colum[j]->read();
-			if(v != m_button_state[(i<<2)+j]){
-				m_button_state[(i<<2)+j] = v;
+			if(v != m_button_state[(i*NUMBER_COLUM)+j]){
+				m_button_state[(i*NUMBER_COLUM)+j] = v;
 				if(v == 1){
 					if(m_repetition_available){
 						reset_repetition();
 						m_wait_for_repeat.attach(callback(this, &Keyboard::start_repetition_series), m_time_before_repetitions);
 					}
-					m_button_push = (i<<2)+j;
-					(*m_function_button_push)((i<<2)+j);
+					m_button_push = (i*NUMBER_COLUM)+j;
+					(*m_function_button_push)((i*NUMBER_COLUM)+j);
 				}
 				else{
 					if(m_repetition_available){
 						reset_repetition();
 					}
 					m_button_push = 0xFF;
-					(*m_function_button_pull)((i<<2)+j+1);
+					(*m_function_button_pull)((i*NUMBER_COLUM)+j+1);
 				}
 			}
 		}
@@ -117,6 +129,7 @@ void Keyboard::member_function_button_push_repeated(){
 }
 
 void Keyboard::set_refresh_period(float p){
+	//function ticker have not to be use to wait more than some sec
 	if(p>5){
 		//TODO add an error
 	}
@@ -131,9 +144,9 @@ uint8_t Keyboard::get_key(){
 
 #ifdef DEBUG
 void Keyboard::print(Serial* pc){
-	for(int i = 0; i<4; i++){
+	for(int i = 0; i<NUMBER_LINE; i++){
 		
-		for(int j = 0; j<4; j++){
+		for(int j = 0; j<NUMBER_COLUM; j++){
 			pc->printf("%hd ", m_button_state[(i*4)+j]);
 		}
 		pc->printf("\n");

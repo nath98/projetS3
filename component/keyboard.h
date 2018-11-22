@@ -23,12 +23,15 @@
 
 #include "mbed.h"
 
+#define NUMBER_LINE 4
+#define NUMBER_COLUM 3
+
 void none(uint8_t i);
 class Keyboard{
 	public:
 		/* you need to pass DigitalOut and DigitalIn pointer to the
 		   class which represent pins on the board*/
-		Keyboard(DigitalOut* line[4], DigitalIn* colum[4]);
+		Keyboard(PinName line1, PinName line2, PinName line3, PinName line4, PinName colum1, PinName colum2,  PinName colum3);
 		virtual ~Keyboard();
 		/*this fuction start the scrutation process if you forget to
 		  call no button state will be read, the fuction will start

@@ -1,6 +1,17 @@
 #include "seven_segment_display.h"
 
-Seven_segment_display::Seven_segment_display(DigitalOut* select_pin[4], DigitalOut* value_pin[7]): m_select_pin(select_pin), m_value_pin(value_pin){
+Seven_segment_display::Seven_segment_display(PinName select1, PinName select2, PinName select3, PinName select4, PinName seg1, PinName seg2, PinName seg3, PinName seg4, PinName seg5, PinName seg6, PinName seg7 ){
+	m_select_pin[0] = new DigitalOut(select1);
+	m_select_pin[1] = new DigitalOut(select2);
+	m_select_pin[2] = new DigitalOut(select3);
+	m_select_pin[3] = new DigitalOut(select4);
+	m_value_pin[0] = new DigitalOut(seg1);
+	m_value_pin[1] = new DigitalOut(seg2);
+	m_value_pin[2] = new DigitalOut(seg3);
+	m_value_pin[3] = new DigitalOut(seg4);
+	m_value_pin[4] = new DigitalOut(seg5);
+	m_value_pin[5] = new DigitalOut(seg6);
+	m_value_pin[6] = new DigitalOut(seg7);
 	m_time_between_2_print = 0.003;
 	m_time_between_2_annim_image = 0.3;
 	m_print = false;
@@ -10,7 +21,17 @@ Seven_segment_display::Seven_segment_display(DigitalOut* select_pin[4], DigitalO
 }
 
 Seven_segment_display::~Seven_segment_display(){
-
+	delete m_select_pin[0];
+	delete m_select_pin[1];
+	delete m_select_pin[2];
+	delete m_select_pin[3];
+	delete m_value_pin[0];
+	delete m_value_pin[1];
+	delete m_value_pin[2];
+	delete m_value_pin[3];
+	delete m_value_pin[4];
+	delete m_value_pin[5];
+	delete m_value_pin[6];
 }
 
 
