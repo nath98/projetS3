@@ -1,6 +1,9 @@
 #include "pong.h"
 
 Pong::Pong(Graphic_Display* screen, Potentiometer* p1, Potentiometer* p2, Shell* s) : m_screen(screen), m_input1(p1), m_input2(p2), m_s(s){
+	m_screen->background(0x0000);
+	m_screen->set_orientation(1);
+	m_screen->cls();
 	m_bar_size = DEFAULT_BAR_SIZE;
 	m_ball_speed.x = -5;
 	m_ball_speed.y = 0;
@@ -9,6 +12,7 @@ Pong::Pong(Graphic_Display* screen, Potentiometer* p1, Potentiometer* p2, Shell*
 	m_screen_size.y = m_screen->height();
 	m_ball_position.x = m_screen_size.x/2;
 	m_ball_position.y = m_screen_size.y/2;
+	m_s->printf("coucou\n");
 }
 
 void Pong::start_game(){

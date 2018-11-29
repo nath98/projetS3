@@ -36,7 +36,11 @@ Board::Board():
 		 TextLCD_D0,
 		 TextLCD_D1,
 		 TextLCD_D2, 
-		 TextLCD_D3){
+		 TextLCD_D3),
+	touchscreen(TOUCHSCREEN_XP, 
+		    TOUCHSCREEN_XM, 
+		    TOUCHSCREEN_YP, 
+		    TOUCHSCREEN_YM){
 	
 }
 
