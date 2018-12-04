@@ -4,6 +4,14 @@
 #include "mbed.h"
 #include "coord.h"
 
+/* The maximum mesure we have without correction is a 221/256
+ * The minimum mesure volatage we have without correction is a 38/256
+ */
+
+#define MIN_U16 38<<8
+#define MAX_U16 221<<8
+
+
 class Touchscreen{
 	public:
 		Touchscreen(PinName xp, PinName xm, PinName yp, PinName ym);
