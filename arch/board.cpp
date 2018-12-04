@@ -40,7 +40,8 @@ Board::Board():
 	touchscreen(TOUCHSCREEN_XP, 
 		    TOUCHSCREEN_XM, 
 		    TOUCHSCREEN_YP, 
-		    TOUCHSCREEN_YM){
+		    TOUCHSCREEN_YM),
+	rotary_encoder(ROTARY_ENCODE_SENS1, ROTARY_ENCODE_SENS2){
 	
 }
 

@@ -12,6 +12,7 @@
 #include "TextLCD.h"
 #include "clock.h"
 #include "touchscreen.h"
+#include "rotary_encoder.h"
 
 #define SEVEN_SEGMENT_DISPLAY_SEG1 D0
 #define SEVEN_SEGMENT_DISPLAY_SEG2 D1
@@ -52,10 +53,28 @@
 #define TOUCHSCREEN_XP PB_0
 #define TOUCHSCREEN_XM PA_4
 
+#define ROTARY_ENCODE_SENS1 PC_10
+#define ROTARY_ENCODE_SENS2 PC_12
+
+#define MATRIX_DR1
+#define MATRIX_DG1
+#define MATRIX_DB1
+#define MATRIX_DR2
+#define MATRIX_DG2
+#define MATRIX_DB2
+#define MATRIX_A
+#define MATRIX_B
+#define MATRIX_C
+#define MATRIX_D
+#define MATRIX_CLK
+#define MATRIX_LAT
+#define MATRIX_OE
+
 class Board{
 	public:
 		Board();
 		virtual ~Board();
+		Rotary_Encoder rotary_encoder;
 		Distance_sensor distance_sensor;
 		Graphic_Display graphic_display;
 		Keyboard keyboard;
