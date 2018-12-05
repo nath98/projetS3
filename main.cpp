@@ -8,7 +8,6 @@ Board board;
 
 int main(){
 	while(1){
-		printf("sens2 : %d\n", board.rotary_encoder.read());
 		wait(0.1);
 	}
 }

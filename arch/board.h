@@ -13,6 +13,10 @@
 #include "clock.h"
 #include "touchscreen.h"
 #include "rotary_encoder.h"
+#include "switch_port.h"
+
+#define SWITCH_PORT_MASK 0x00000FF
+#define SWITCH_PORT_PORT PortC
 
 #define SEVEN_SEGMENT_DISPLAY_SEG1 D0
 #define SEVEN_SEGMENT_DISPLAY_SEG2 D1
@@ -85,6 +89,8 @@ class Board{
 		Shell shell;
 		Clock clock;
 		Touchscreen touchscreen;
+		Switch_Port switch_port;
+		
 
 };
 
