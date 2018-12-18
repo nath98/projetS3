@@ -59,6 +59,10 @@ class Keyboard{
 		void detect_push();
 		void start_interrupt();
 
+		static uint8_t transcodage(uint8_t id);
+		static void set_transcoding_table(uint8_t *tab);
+		static uint8_t transcoding_table[];
+
 #ifdef DEBUG
 		/* a debug method */
 		void print(Serial* pc);

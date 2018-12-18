@@ -1,6 +1,14 @@
 #include "keyboard.h"
 
+uint8_t Keyboard::transcoding_table[] = {1,2,3,4,5,6,7,8,9,10,0,12};
+
 Keyboard::Keyboard(PinName line1, PinName line2, PinName line3, PinName line4, PinName colum1, PinName colum2, PinName colum3)   /*:m_debug(USBTX, USBRX)*/{
+	uint8_t transcoding_table[NUMBER_LINE*NUMBER_COLUM];
+	for(uint8_t i = 0; i<NUMBER_LINE*NUMBER_COLUM; i++){
+		transcoding_table[i] = i+1;
+	}
+	transcoding_table[10] = 0;
+	set_transcoding_table(transcoding_table);
 	m_line[0] = new DigitalOut(line1);
 	m_line[1] = new DigitalOut(line2);
 	m_line[2] = new DigitalOut(line3);
@@ -52,18 +60,29 @@ void Keyboard::scan(){
 						m_wait_for_repeat.attach(callback(this, &Keyboard::start_repetition_series), m_time_before_repetitions);
 					}
 					m_button_push = (i*NUMBER_COLUM)+j;
-					(*m_function_button_push)((i*NUMBER_COLUM)+j);
+					(*m_function_button_push)(transcodage((i*NUMBER_COLUM)+j));
 				}
 				else{
 					if(m_repetition_available){
 						reset_repetition();
 					}
 					m_button_push = 0xFF;
-					(*m_function_button_pull)((i*NUMBER_COLUM)+j);
+					(*m_function_button_pull)(transcodage((i*NUMBER_COLUM)+j));
 				}
 			}
 		}
 		m_line[i]->write(0);
+	}
+}
+
+uint8_t Keyboard::transcodage(uint8_t id){
+	return transcoding_table[id];
+}
+
+
+void Keyboard::set_transcoding_table(uint8_t *tab){
+	for(uint8_t i = 0; i<NUMBER_COLUM*NUMBER_LINE; i++){
+		Keyboard::transcoding_table[i] = tab[i];
 	}
 }
 
@@ -150,11 +169,11 @@ void Keyboard::set_time_before_repetition(float t){
 }
 
 void Keyboard::member_function_button_push_since_limit_time(){
-	(*m_function_button_push_since_limit_time)(m_button_push);
+	(*m_function_button_push_since_limit_time)(transcodage(m_button_push));
 }
 
 void Keyboard::member_function_button_push_repeated(){
-	(*m_function_button_push_repeated)(m_button_push);
+	(*m_function_button_push_repeated)(transcodage(m_button_push));
 }
 
 void Keyboard::set_refresh_period(float p){

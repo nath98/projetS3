@@ -3,6 +3,7 @@
 #include "arch/board.h"
 #include "game/pong.h"
 #include "component/coord.h"
+#include "component/keyboard.h"
 
 Board board;
 
