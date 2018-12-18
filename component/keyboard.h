@@ -55,6 +55,9 @@ class Keyboard{
 		void set_repetition_period(float p);
 	
 		void set_repetition_available(bool b);
+		void reset_interruption();
+		void detect_push();
+		void start_interrupt();
 
 #ifdef DEBUG
 		/* a debug method */
@@ -66,7 +69,7 @@ class Keyboard{
 		void start_repetition_series();
 		void reset_repetition();
 
-		uint8_t m_button_state[16];//S1 : top_left, S4 : top_right, S13 : bottom_left…
+		uint8_t m_button_state[NUMBER_COLUM*NUMBER_LINE];//S1 : top_left, S4 : top_right, S13 : bottom_left…
 		void member_function_button_push_since_limit_time();
 		void member_function_button_push_repeated();
 		
@@ -74,8 +77,8 @@ class Keyboard{
 		void (*m_function_button_pull)(uint8_t);
 		void (*m_function_button_push_since_limit_time)(uint8_t);
 		void (*m_function_button_push_repeated)(uint8_t);
-		DigitalOut* m_line[4];
-		DigitalIn* m_colum[4];
+		DigitalOut* m_line[NUMBER_LINE];
+		InterruptIn* m_colum[NUMBER_COLUM];
 		float m_refresh_period;
 		float m_time_before_repetitions;
 		float m_repetition_period;
