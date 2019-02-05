@@ -1,6 +1,6 @@
 #include "clock.h"
 
-Clock::Clock(){
+Clock::Clock(): Component(){
 	m_speed = 1.0;
 	m_start = false;
 	m_callback = NULL;

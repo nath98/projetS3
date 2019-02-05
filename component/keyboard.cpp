@@ -2,7 +2,7 @@
 
 uint8_t Keyboard::transcoding_table[] = {1,2,3,4,5,6,7,8,9,10,0,12};
 
-Keyboard::Keyboard(PinName line1, PinName line2, PinName line3, PinName line4, PinName colum1, PinName colum2, PinName colum3)   /*:m_debug(USBTX, USBRX)*/{
+Keyboard::Keyboard(PinName line1, PinName line2, PinName line3, PinName line4, PinName colum1, PinName colum2, PinName colum3): Component()   /*:m_debug(USBTX, USBRX)*/{
 	uint8_t transcoding_table[NUMBER_LINE*NUMBER_COLUM];
 	for(uint8_t i = 0; i<NUMBER_LINE*NUMBER_COLUM; i++){
 		transcoding_table[i] = i+1;
@@ -28,10 +28,10 @@ Keyboard::Keyboard(PinName line1, PinName line2, PinName line3, PinName line4, P
 	m_time_before_repetitions = 1;
 //	m_scan = false;
 	m_repetition_available = false;
-	m_function_button_push= &none;	
-	m_function_button_pull= &none;	
-	m_function_button_push_since_limit_time = &none;
-	m_function_button_push_repeated = &none;
+	m_function_button_push = NULL;	
+	m_function_button_pull = NULL;	
+	m_function_button_push_since_limit_time = NULL;
+	m_function_button_push_repeated = NULL;
 }
 
 Keyboard::~Keyboard(){
@@ -60,14 +60,17 @@ void Keyboard::scan(){
 						m_wait_for_repeat.attach(callback(this, &Keyboard::start_repetition_series), m_time_before_repetitions);
 					}
 					m_button_push = (i*NUMBER_COLUM)+j;
-					(*m_function_button_push)(transcodage((i*NUMBER_COLUM)+j));
+					//(*m_function_button_push)(transcodage((i*NUMBER_COLUM)+j));
+					if(m_game!=NULL){
+						m_game->keyboard_push(i*NUMBER_COLUM+j);
+					}
 				}
 				else{
 					if(m_repetition_available){
 						reset_repetition();
 					}
 					m_button_push = 0xFF;
-					(*m_function_button_pull)(transcodage((i*NUMBER_COLUM)+j));
+					//(*m_function_button_pull)(transcodage((i*NUMBER_COLUM)+j));
 				}
 			}
 		}

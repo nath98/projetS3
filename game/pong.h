@@ -2,9 +2,10 @@
 #define PONG_H
 
 #include "mbed.h"
-#include "../component/graphic_display.h"
-#include "../component/potentiometer.h"
-#include "../component/shell.h"
+#include "component/graphic_display.h"
+#include "component/potentiometer.h"
+#include "component/shell.h"
+//#include "game_manager.h"
 
 #define DEFAULT_BALL_DIAMETER 3
 #define DEFAULT_BAR_SIZE 50
@@ -12,11 +13,11 @@
 #define DISTANCE_FROM_SCREEN_LIMIT 6
 #define BAR_WIDTH 4
 
-class Pong{
+class Pong : public Game{
 	public:
-		Pong(Graphic_Display* screen, Potentiometer* p1, Potentiometer* p2, Shell* s);
-		void start_game();
-		void stop_game();
+		Pong(/*Game_manager *game_manager,*/ Graphic_Display *screen, Potentiometer *p1, Potentiometer *p2);
+		void start();
+		void finish();
 		bool get_game_need_to_be_update();
 		void update_game();
 	
@@ -24,7 +25,6 @@ class Pong{
 		bool m_game_need_to_be_update;
 		void game_need_to_be_update();
 		
-		Shell* m_s;
 
 		Ticker m_ticker;
 		

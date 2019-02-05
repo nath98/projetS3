@@ -2,8 +2,12 @@
 #define MBED_TEXTLCD_H
 
 #include "mbed.h"
+#include "component.h"
 
-class TextLCD : public Stream {
+
+class Component;
+
+class TextLCD : public Component, public Stream {
 
 public:
 

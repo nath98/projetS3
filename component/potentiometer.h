@@ -2,8 +2,12 @@
 #define POTENTIOMETER_H
 
 #include "mbed.h"
+#include "component.h"
 
-class Potentiometer : public AnalogIn{
+class Component;
+
+
+class Potentiometer : public AnalogIn, public Component{
 	public:
 		Potentiometer(PinName p);
 	private:

@@ -2,8 +2,12 @@
 #define SWITCH_PORT_H
 
 #include "mbed.h"
+#include "component.h"
 
-class Switch_Port : public PortIn{
+
+class Component;
+
+class Switch_Port : public PortIn, public Component{
 	public:
 		Switch_Port(PortName p, int mask);
 	

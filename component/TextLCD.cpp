@@ -1,7 +1,7 @@
 #include "TextLCD.h"
 #include "mbed.h"
 
-TextLCD::TextLCD(PinName rs, PinName e, PinName d0, PinName d1,PinName d2, PinName d3) : m_rs(rs),m_e(e), m_d(d0, d1, d2, d3)
+TextLCD::TextLCD(PinName rs, PinName e, PinName d0, PinName d1,PinName d2, PinName d3) : Component(), m_rs(rs),m_e(e), m_d(d0, d1, d2, d3)
 {
     m_e  = 1;
     m_rs = 0;            // command mode

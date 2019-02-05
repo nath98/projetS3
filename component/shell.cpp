@@ -1,6 +1,6 @@
 #include "shell.h"
 
-Shell::Shell() : RawSerial(USBTX, USBRX, 100000){
+Shell::Shell() : RawSerial(USBTX, USBRX, 100000), Component(){
 	m_callback = NULL;
 	attach(callback(this, &Shell::receive));
 	printf("liason init");
@@ -38,6 +38,17 @@ void Shell::receive(){
 
 void Shell::set_callback(void (*funct)(void)){
 	m_callback = funct;
+}
+
+void Shell::Update(){
+	while(!m_list_to_print.empty()){
+		printf(m_list_to_print.front());
+		m_list_to_print.pop();
+	}
+}
+
+void Shell::delay_print(char* s){
+	m_list_to_print.push(s);
 }
 
 //void Shell::printf(char* c){

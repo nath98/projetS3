@@ -1,5 +1,5 @@
 #include "potentiometer.h"
 
-Potentiometer::Potentiometer(PinName p) : AnalogIn(p){
+Potentiometer::Potentiometer(PinName p) : Component(), AnalogIn(p){
 
 }
