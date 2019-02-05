@@ -1,6 +1,6 @@
 #include "seven_segment_display.h"
 
-Seven_segment_display::Seven_segment_display(PinName select1, PinName select2, PinName select3, PinName select4, PinName seg1, PinName seg2, PinName seg3, PinName seg4, PinName seg5, PinName seg6, PinName seg7 ): Component(){
+Seven_segment_display::Seven_segment_display(PinName select1, PinName select2, PinName select3, PinName select4, PinName seg1, PinName seg2, PinName seg3, PinName seg4, PinName seg5, PinName seg6, PinName seg7 ){
 	m_select_pin[0] = new DigitalOut(select1);
 	m_select_pin[1] = new DigitalOut(select2);
 	m_select_pin[2] = new DigitalOut(select3);

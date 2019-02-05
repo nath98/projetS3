@@ -22,15 +22,12 @@
 #define KEYBOARD_H
 
 #include "mbed.h"
-#include "component/component.h"
-#include "game/game.h"
 
 #define NUMBER_LINE 4
 #define NUMBER_COLUM 3
 
-
 void none(uint8_t i);
-class Keyboard : public Component{
+class Keyboard{
 	public:
 		/* you need to pass DigitalOut and DigitalIn pointer to the
 		   class which represent pins on the board*/
@@ -49,8 +46,8 @@ class Keyboard : public Component{
 		uint8_t get_key();
 
 		//setters
-		void set_callback_push_button(void (*)(uint8_t));
-		void set_callback_pull_button(void (*)(uint8_t));
+		void set_callback_push_button(void (*callback_fct)(uint8_t));
+		void set_callback_pull_button(void (*callback_fct)(uint8_t));
 		void set_callback_push_button_since_limit_time(void (*callback_fct)(uint8_t));
 		void set_callback_push_button_repeated(void (*callback_fct)(uint8_t));
 		void set_refresh_period(float p);
@@ -80,7 +77,6 @@ class Keyboard : public Component{
 		void member_function_button_push_since_limit_time();
 		void member_function_button_push_repeated();
 		
-//		Callback m_callback;
 		void (*m_function_button_push)(uint8_t);
 		void (*m_function_button_pull)(uint8_t);
 		void (*m_function_button_push_since_limit_time)(uint8_t);

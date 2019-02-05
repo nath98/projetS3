@@ -1,6 +1,6 @@
 #include "rotary_encoder.h"
 
-Rotary_Encoder::Rotary_Encoder(PinName sens1, PinName sens2): Component(), m_sens1(sens1), m_sens2(sens2){
+Rotary_Encoder::Rotary_Encoder(PinName sens1, PinName sens2): m_sens1(sens1), m_sens2(sens2){
 	m_value = 0;
 	m_sens1.rise(callback(this, &Rotary_Encoder::movement_detected));
 	m_sens2.rise(callback(this, &Rotary_Encoder::movement_detected));

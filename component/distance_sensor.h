@@ -2,11 +2,8 @@
 #define DISTANCE_SENSOR_H
 
 #include "mbed.h"
-#include "component.h"
 
-//class Component;
-
-class Distance_sensor: public Component{
+class Distance_sensor{
 	public:
 		Distance_sensor(PinName out, PinName in);
 		void start_mesure();

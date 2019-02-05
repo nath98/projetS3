@@ -2,7 +2,6 @@
 #define CLOCK_H
 
 #include "mbed.h"
-#include "component.h"
 
 typedef struct {
 	uint8_t hour = 0;
@@ -10,7 +9,7 @@ typedef struct {
 	uint8_t sec = 0;
 } clk_t;
 
-class Clock : public Component{
+class Clock{
 	public:
 		Clock();
 		void start();

@@ -20,10 +20,8 @@
 
 #include "mbed.h"
 #include <vector>
-#include "component.h"
 
-
-class Seven_segment_display: public Component
+class Seven_segment_display
 {
 	/* this transcoding_tab is use to convert an uint8_t containning in
 	   [0, 15] to a table which represent it’s hexadecimal representation

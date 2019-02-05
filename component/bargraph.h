@@ -2,9 +2,8 @@
 #define BARGRAPH_H
 
 #include "mbed.h"
-#include "component.h"
 
-class Bargraph : public PortOut, public Component{
+class Bargraph : public PortOut{
 	public:
 		Bargraph(PortName p, int mask);
 	

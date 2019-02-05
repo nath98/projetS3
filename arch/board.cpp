@@ -1,18 +1,4 @@
 #include "board.h"
-/*#include "distance_sensor.h"
-#include "graphic_display.h"
-#include "keyboard.h"
-#include "potentiometer.h"
-#include "seven_segment_display.h"
-#include "shell.h"
-#include "TextLCD.h"
-#include "clock.h"
-#include "touchscreen.h"
-#include "rotary_encoder.h"
-#include "switch_port.h"
-#include "bargraph.h"
-#include "random_generator.h"
-*/
 
 Board::Board(): 
 	clock(),
@@ -57,23 +43,7 @@ Board::Board():
 		    TOUCHSCREEN_YM),
 	rotary_encoder(ROTARY_ENCODE_SENS1, ROTARY_ENCODE_SENS2),
 	switch_port(SWITCH_PORT_PORT, SWITCH_PORT_MASK),
-	bargraph(BARGRAPH_PORT, BARGRAPH_MASK),
-	random_generator(){
-
-	m_pointer_list.push_back(&rotary_encoder);
-	m_pointer_list.push_back(&distance_sensor);
-	m_pointer_list.push_back(&graphic_display);
-	m_pointer_list.push_back(&keyboard);
-	m_pointer_list.push_back(&text_lcd);
-	m_pointer_list.push_back(&potentiometer_right);
-	m_pointer_list.push_back(&potentiometer_left);
-	m_pointer_list.push_back(&seven_segment_display);
-	m_pointer_list.push_back(&shell);
-	m_pointer_list.push_back(&clock);
-	m_pointer_list.push_back(&touchscreen);
-	m_pointer_list.push_back(&switch_port);
-	m_pointer_list.push_back(&bargraph);
-	m_pointer_list.push_back(&random_generator);
+	bargraph(BARGRAPH_PORT, BARGRAPH_MASK){
 	
 }
 
@@ -81,8 +51,4 @@ Board::~Board(){
 
 }
 
-void Board::Update(){
-	for(uint8_t i = 0; i <m_pointer_list.size();i++){
-		m_pointer_list[i]->Update();
-	}
-}
+

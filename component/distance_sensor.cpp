@@ -1,6 +1,6 @@
 #include "distance_sensor.h"
 
-Distance_sensor::Distance_sensor(PinName out, PinName in): Component(), m_out(out), m_in(in){
+Distance_sensor::Distance_sensor(PinName out, PinName in):m_out(out), m_in(in){
 	m_out = 0;
 	m_in.rise(callback(this, &Distance_sensor::start_reading));
 	m_in.fall(callback(this, &Distance_sensor::stop_reading));

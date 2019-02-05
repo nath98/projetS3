@@ -2,12 +2,8 @@
 #define ROTARY_ENCODER_H
 
 #include "mbed.h"
-#include "component.h"
 
-class Component;
-
-
-class Rotary_Encoder: public Component{
+class Rotary_Encoder{
 	public:
 		Rotary_Encoder(PinName sens1, PinName sens2);
 		void Int();

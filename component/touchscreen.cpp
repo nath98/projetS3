@@ -2,7 +2,7 @@
 
 void null_fct(){}
 
-Touchscreen::Touchscreen(PinName xp, PinName xm, PinName yp, PinName ym): Component(),  m_xp(xp), m_yp(yp), m_xm(xm), m_ym(ym)
+Touchscreen::Touchscreen(PinName xp, PinName xm, PinName yp, PinName ym): m_xp(xp), m_yp(yp), m_xm(xm), m_ym(ym)
 {
 	AnalogIn analog_yp(m_yp);
 	AnalogIn analog_xm(m_xm);
