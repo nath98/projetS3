@@ -4,6 +4,11 @@
 #include "SPI_TFT_ILI9341/SPI_TFT_ILI9341.h"
 #include "mbed.h"
 
+#include "Arial12x12.h"
+#include "Arial24x23.h"
+#include "Arial28x28.h"
+#include "font_big.h"
+
 typedef struct{
 	int16_t x;
 	int16_t y;

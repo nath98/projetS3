@@ -4,6 +4,7 @@
 #include "game/pong.h"
 #include "component/coord.h"
 #include "component/keyboard.h"
+//#include "Arial24x23.h"
 
 Board board;
 
@@ -26,6 +27,10 @@ int main(){
 	board.keyboard.set_callback_push_button(&fct_push);
 	board.keyboard.set_callback_pull_button(&fct_pop);
 	board.keyboard.start_interrupt();
+	board.graphic_display.cls();
+	board.graphic_display.set_font((unsigned char*) Arial24x23);
+	board.graphic_display.locate(100,100);
+	board.graphic_display.printf("coucou");
 	while(1){
 		if(global_print){
 			global_print = false;
