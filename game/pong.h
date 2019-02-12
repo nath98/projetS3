@@ -5,6 +5,9 @@
 #include "../component/graphic_display.h"
 #include "../component/potentiometer.h"
 #include "../component/shell.h"
+#include "game.h"
+
+class Game_Manager;
 
 #define DEFAULT_BALL_DIAMETER 3
 #define DEFAULT_BAR_SIZE 50
@@ -12,13 +15,13 @@
 #define DISTANCE_FROM_SCREEN_LIMIT 6
 #define BAR_WIDTH 4
 
-class Pong{
+class Pong : public Game{
 	public:
-		Pong(Graphic_Display* screen, Potentiometer* p1, Potentiometer* p2, Shell* s);
-		void start_game();
-		void stop_game();
+		Pong(Game_Manager* gm, Graphic_Display* screen, Potentiometer* p1, Potentiometer* p2, Shell* s);
+		void start();
+		void stop();
 		bool get_game_need_to_be_update();
-		void update_game();
+		void toDo();
 	
 	private:
 		bool m_game_need_to_be_update;

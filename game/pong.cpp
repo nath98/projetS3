@@ -1,6 +1,7 @@
 #include "pong.h"
+#include "game_manager.h"
 
-Pong::Pong(Graphic_Display* screen, Potentiometer* p1, Potentiometer* p2, Shell* s) : m_screen(screen), m_input1(p1), m_input2(p2), m_s(s){
+Pong::Pong(Game_Manager* gm, Graphic_Display* screen, Potentiometer* p1, Potentiometer* p2, Shell* s) : Game(gm), m_screen(screen), m_input1(p1), m_input2(p2), m_s(s){
 	m_screen->background(0x0000);
 	m_screen->set_orientation(1);
 	m_screen->cls();
@@ -15,11 +16,11 @@ Pong::Pong(Graphic_Display* screen, Potentiometer* p1, Potentiometer* p2, Shell*
 	m_s->printf("coucou\n");
 }
 
-void Pong::start_game(){
+void Pong::start(){
 	m_ticker.attach(callback(this, &Pong::game_need_to_be_update), 0.02);
 }
 
-void Pong::stop_game(){
+void Pong::stop(){
 	m_ticker.detach();
 }
 
@@ -31,7 +32,7 @@ void Pong::game_need_to_be_update(){
 	m_game_need_to_be_update = true;
 }
 
-void Pong::update_game(){
+void Pong::toDo(){
 	//clear to allow next update
 	m_game_need_to_be_update = false;
 
