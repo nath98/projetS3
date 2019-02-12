@@ -15,6 +15,7 @@
 #include "rotary_encoder.h"
 #include "switch_port.h"
 #include "bargraph.h"
+#include "random.h"
 
 #define SWITCH_PORT_MASK 0x00000FF
 #define SWITCH_PORT_PORT PortC
@@ -95,6 +96,7 @@ class Board{
 		Touchscreen touchscreen;
 		Switch_Port switch_port;
 		Bargraph bargraph;
+		Random random;
 		
 
 };

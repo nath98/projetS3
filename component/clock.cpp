@@ -28,6 +28,10 @@ void Clock::reset(){
 	}
 }
 
+clk_t Clock::get_time(){
+	return m_time;
+}
+
 void Clock::set_callback(void (*funct)(clk_t)){
 	m_callback = funct;
 }
