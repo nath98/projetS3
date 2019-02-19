@@ -7,7 +7,7 @@
 #include "../component/shell.h"
 #include "game.h"
 
-class Game_Manager;
+//class Game_Manager;
 
 #define DEFAULT_BALL_DIAMETER 3
 #define DEFAULT_BAR_SIZE 50
@@ -17,7 +17,7 @@ class Game_Manager;
 
 class Pong : public Game{
 	public:
-		Pong(Game_Manager* gm, Graphic_Display* screen, Potentiometer* p1, Potentiometer* p2, Shell* s);
+		Pong(/*Game_Manager* gm,*/ Graphic_Display* screen, Potentiometer* p1, Potentiometer* p2, Shell* s);
 		void start();
 		void stop();
 		bool get_game_need_to_be_update();

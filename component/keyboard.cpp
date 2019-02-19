@@ -47,6 +47,7 @@ Keyboard::~Keyboard(){
 
 void none(uint8_t i){}
 
+
 void Keyboard::scan(){
 	for(uint8_t i = 0; i<4; i++){
 		m_line[i]->write(1);

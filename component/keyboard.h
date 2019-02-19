@@ -22,12 +22,13 @@
 #define KEYBOARD_H
 
 #include "mbed.h"
+#include "component.h"
 
 #define NUMBER_LINE 4
 #define NUMBER_COLUM 3
 
 void none(uint8_t i);
-class Keyboard{
+class Keyboard : public Component{
 	public:
 		/* you need to pass DigitalOut and DigitalIn pointer to the
 		   class which represent pins on the board*/
@@ -62,6 +63,7 @@ class Keyboard{
 		static uint8_t transcodage(uint8_t id);
 		static void set_transcoding_table(uint8_t *tab);
 		static uint8_t transcoding_table[];
+
 
 #ifdef DEBUG
 		/* a debug method */

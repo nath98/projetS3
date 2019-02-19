@@ -2,11 +2,12 @@
 #define GAME_H
 
 #include "mbed.h"
+#include "game_manager.h"
 
-class Game_Manager;
 
 class Game{
 	public :
+		Game();
 		Game(Game_Manager* gm);
 		virtual void start() = 0;
 		virtual void stop() = 0;
@@ -16,7 +17,7 @@ class Game{
 		virtual void get_Keyboard_repeat(uint8_t key);
 
 
-	private:
+	protected:
 		Game_Manager *m_gm;
 
 };

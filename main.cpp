@@ -4,6 +4,8 @@
 #include "game/pong.h"
 #include "component/coord.h"
 #include "component/keyboard.h"
+#include "initialisation.h"
+#include "game_manager.h"
 //#include "Arial24x23.h"
 
 Board board;
@@ -24,13 +26,16 @@ void fct_pop(uint8_t value){
 
 int main(){
 	global_print = true;
-	board.keyboard.set_callback_push_button(&fct_push);
-	board.keyboard.set_callback_pull_button(&fct_pop);
-	board.keyboard.start_interrupt();
 	board.graphic_display.cls();
 	board.graphic_display.set_font((unsigned char*) Arial24x23);
 	board.graphic_display.locate(100,100);
 	board.graphic_display.printf("coucou");
+	Game_Manager gm;
+	Initialisation init(&gm, &board);
+	init.start();
+//	board.keyboard.set_callback_push_button(&fct_push);
+//	board.keyboard.set_callback_pull_button(&fct_pop);
+//	board.keyboard.start_interrupt();
 	while(1){
 		if(global_print){
 			global_print = false;
@@ -42,7 +47,8 @@ int main(){
 			uint8_t value = global_value;
 			board.shell.printf("pull %hd\n", value);
 		}
-		wait(0.1);
+		gm.toDo();
+		
 	}
 }
 

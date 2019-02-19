@@ -43,7 +43,8 @@ Board::Board():
 		    TOUCHSCREEN_YM),
 	rotary_encoder(ROTARY_ENCODE_SENS1, ROTARY_ENCODE_SENS2),
 	switch_port(SWITCH_PORT_PORT, SWITCH_PORT_MASK),
-	bargraph(BARGRAPH_PORT, BARGRAPH_MASK){
+	bargraph(BARGRAPH_PORT, BARGRAPH_MASK),
+	random(){
 	
 }
 
