@@ -8,7 +8,7 @@
 
 class Game_Manager;
 
-class Initialisation  : public Game{
+class Initialisation : public Game{
 	public:
 		Initialisation(Game_Manager* gm, Board *board);
 		void start();

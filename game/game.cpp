@@ -1,4 +1,6 @@
 #include "game.h"
+#include "game_manager.h"
+
 
 Game::Game() {
 

@@ -2,8 +2,8 @@
 #define GAME_H
 
 #include "mbed.h"
-#include "game_manager.h"
 
+class Game_Manager;
 
 class Game{
 	public :

@@ -4,7 +4,6 @@
 Initialisation* ptr_last_initialisation = NULL;
 
 Initialisation::Initialisation(Game_Manager* gm, Board* board): Game(gm), m_board(board){
-	m_gm->set_game(this);
 }
 
 void Initialisation::start(){
@@ -21,7 +20,7 @@ void Initialisation::start(){
 }
 
 void Initialisation::stop(){
-	m_gm->remove_game(this);
+	m_gm->end_game(this);
 	m_board->graphic_display.cls();
 	m_board->graphic_display.locate(10,100);
 	m_board->graphic_display.printf("système initialise !");
@@ -33,7 +32,6 @@ void Initialisation::get_keyboard(uint8_t key){
 
 void Initialisation::toDo(){
 	if(m_last_key_press == 0){
-		m_board->graphic_display.printf("ko : ");
 		m_board->random.set_seed(m_timer.read_ms());
 		stop();
 	}
@@ -43,8 +41,6 @@ void get_keyboard_push(uint8_t key){
 	if(ptr_last_initialisation != NULL){
 		ptr_last_initialisation->get_keyboard(key);
 	}
-	else{
-//		printf("haaaa");
-	}
+	else{}
 }
 

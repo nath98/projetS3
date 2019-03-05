@@ -1,7 +1,7 @@
 #include "pong.h"
-//#include "game_manager.h"
+#include "game_manager.h"
 
-Pong::Pong(/*Game_Manager* gm,*/ Graphic_Display* screen, Potentiometer* p1, Potentiometer* p2, Shell* s) : Game(/*gm*/), m_screen(screen), m_input1(p1), m_input2(p2), m_s(s){
+Pong::Pong(Game_Manager* gm, Graphic_Display* screen, Potentiometer* p1, Potentiometer* p2, Shell* s) : Game(/*gm*/), m_screen(screen), m_input1(p1), m_input2(p2), m_s(s){
 	m_screen->background(0x0000);
 	m_screen->set_orientation(1);
 	m_screen->cls();
