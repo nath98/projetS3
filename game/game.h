@@ -12,9 +12,6 @@ class Game{
 		virtual void start() = 0;
 		virtual void stop() = 0;
 		virtual void toDo() = 0;
-		virtual void get_Keyboard_push(uint8_t key);
-		virtual void get_Keyboard_pull(uint8_t key);
-		virtual void get_Keyboard_repeat(uint8_t key);
 
 
 	protected:

@@ -1,9 +1,17 @@
 #include "shell.h"
 
+char printf_buffer[2000];
+
 Shell::Shell() : RawSerial(USBTX, USBRX, 100000){
 	m_callback = NULL;
 	attach(callback(this, &Shell::receive));
-	printf("liason init");
+	m_connected = true;
+	m_path = "/home/falcon";
+	printf_shell("liason init\n");
+}
+
+void Shell::set_connected(bool c){
+	m_connected = c;
 }
 
 void Shell::receive(){
@@ -20,7 +28,7 @@ void Shell::receive(){
 			instruction += m_message[i];
 		}
 		if(instruction == "cd"){
-			printf("\ncd\n");
+			printf_shell("\ncd\n");
 		}
 		else if(instruction == "ls"){
 		
@@ -40,6 +48,13 @@ void Shell::set_callback(void (*funct)(void)){
 	m_callback = funct;
 }
 
-//void Shell::printf(char* c){
-//	printf(c);
-//}
+void Shell::printf_shell(char* format, ...){
+	va_list args;
+	va_start(args, format);
+	if(m_connected){
+		printf("falcon@FX-355-pc:%s$  ", m_path.c_str());
+	}
+	vsprintf(printf_buffer, format, args);
+	printf("%s", printf_buffer);
+	va_end(args);
+}

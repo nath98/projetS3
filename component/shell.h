@@ -3,16 +3,20 @@
 
 #include "mbed.h"
 #include <string>
+#include <stdarg.h>
 
 class Shell : public RawSerial{
 	public:
 		Shell();
-//		void printf(string string);
+		void printf_shell(char* format, ...);
 		void set_callback(void (*funct)(void));
+		void set_connected(bool c);
 //		void printf(char* c);
 
 	private:
+		bool m_connected;
 		std::string m_message;
+		std::string m_path;
 		void receive();
 		void (*m_callback)(void);
 //		RawSerial m_pc;

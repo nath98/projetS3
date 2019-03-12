@@ -14,12 +14,13 @@ class Game_Manager{
 		//void go_to_state(
 		void end_game(Game* game);
 
+		Board m_board;
+
 	private:
 		void set_game(Game* game);
 		void start_game(Game* game);
 		void remove_game(Game* game);
 		
-		Board m_board;
 		Initialisation m_init;
 		Autentification m_autent;
 		//Pong m_pong;
