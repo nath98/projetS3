@@ -15,15 +15,24 @@ void Initialisation::start(){
 	m_timer.start();
 	m_board->graphic_display.cls();
 	m_board->graphic_display.set_font((unsigned char*) Arial24x23);
+	m_board->graphic_display.set_orientation(3);
 	m_board->graphic_display.locate(10,100);
 	m_board->graphic_display.printf("TAPE 0 pour réinitialiser le systeme");
 }
 
 void Initialisation::stop(){
-	m_gm->end_game(this);
+	m_board->graphic_display.printf(".");
+	wait(1);
+	m_board->graphic_display.printf(".");
+	wait(1);
+	m_board->graphic_display.printf(".");
+	wait(1);
 	m_board->graphic_display.cls();
 	m_board->graphic_display.locate(10,100);
 	m_board->graphic_display.printf("système initialise !");
+	wait(1);
+
+	m_gm->end_game(this);
 }
 
 void Initialisation::get_keyboard(uint8_t key){

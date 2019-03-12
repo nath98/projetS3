@@ -2,8 +2,9 @@
 #define GAME_MANAGER_H
 
 #include "game/initialisation.h"
+#include "game/autentification.h"
 #include "game/pong.h"
-#include <vector>
+#include <list>
 class Game;
 
 class Game_Manager{
@@ -20,8 +21,9 @@ class Game_Manager{
 		
 		Board m_board;
 		Initialisation m_init;
+		Autentification m_autent;
 		//Pong m_pong;
-		std::vector<Game*> m_current_game;
+		std::list<Game*> m_current_game;
 };
 
 
