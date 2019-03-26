@@ -1,6 +1,6 @@
 #ifndef TREE_H
 #define TREE_H
-
+/*
 #include "node.h"
 
 class Tree{
@@ -16,5 +16,5 @@ class Tree{
 
 };
 
-
+*/
 #endif //TREE_H

@@ -1,5 +1,5 @@
 #include "tree.h"
-
+/*
 Tree::Tree() : m_initial_Node(NULL, "/home"){
 	m_current_node = &m_initial_Node;
 }
@@ -30,3 +30,4 @@ void Tree::go_to(string path){
 		tableau_sous_chaine.push_back(sous_chaine);
 		}
 }
+*/
