@@ -4,6 +4,9 @@
 #include "mbed.h"
 #include <string>
 #include <stdarg.h>
+#include <vector>
+#include <iostream>
+#include <sstream>
 
 class Shell : public RawSerial{
 	public:

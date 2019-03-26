@@ -2,9 +2,14 @@
 
 char printf_buffer[2000];
 
+void null_fct_shell(){
+
+}
+
 Shell::Shell() : RawSerial(USBTX, USBRX, 100000){
 	m_callback = NULL;
 	attach(callback(this, &Shell::receive));
+	set_callback(&null_fct_shell);
 	m_connected = true;
 	m_path = "/home/falcon";
 	printf_shell("liason init\n");
@@ -16,19 +21,26 @@ void Shell::set_connected(bool c){
 
 void Shell::receive(){
 	char c = getc();
-	if(c != '\n' && m_callback != NULL){
+	if((c != '\n' && c!= '\r') && m_callback != NULL){
 		m_message +=  c;
 	}
 	else if(m_callback != NULL){
+		stringstream ss(m_message);
+		std::vector<std::string> tableau_sous_chaine;
+		std::string sous_chaine;
+		int j = 0;
+		while(getline(ss, sous_chaine, ' ')){
+			tableau_sous_chaine.push_back(sous_chaine);
+		}
 		//try to analyse the msg
 		//first you have to split the message by word
-		string instruction;
+		string instruction = tableau_sous_chaine[0];
 		uint16_t i;
-		for(i = 0; m_message[i]!=' '; i++){
-			instruction += m_message[i];
-		}
 		if(instruction == "cd"){
-			printf_shell("\ncd\n");
+			if(tableau_sous_chaine.size()>1){
+				m_path += '/' + tableau_sous_chaine[1];
+				printf_shell("");
+			}
 		}
 		else if(instruction == "ls"){
 		
